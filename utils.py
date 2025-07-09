@@ -14,11 +14,17 @@ def get_headers():
     }
     return headers
 
-def get_produtos(name_like=None, limit=50, offset=0):
+def get_produtos(name_like=None, limit=50, offset=0, sort=None):
     try:
-        params = {"_limit": limit, "_offset": offset}
+        params = {
+            "_limit": limit,
+            "_offset": offset
+        }
         if name_like:
             params["name_like"] = name_like
+        if sort:
+            params["_sort"] = sort  # ✅ aqui está o ponto principal
+
         resp = requests.get(API_URL, headers=get_headers(), params=params)
         if resp.status_code == 200:
             return resp.json().get("results", [])
