@@ -46,10 +46,16 @@ def cadastrar_produto(sku, nome):
         print(f"Erro ao cadastrar produto: {e}")
         return False
 
-def atualizar_produto(sku, nome=None):
+def atualizar_produto(sku, nome=None, description=None):
     try:
-        payload = {"name": nome} if nome else {}
-        resp = requests.put(f"{API_URL}/{sku}", headers=get_headers(), json=payload)
+        payload = {}
+        if nome is not None:
+            payload["name"] = nome
+        if description is not None:
+            payload["description"] = description
+        if not payload:
+            return False
+        resp = requests.patch(f"{API_URL}/{sku}", headers=get_headers(), json=payload)
         return resp.status_code == 202
     except Exception as e:
         print(f"Erro ao atualizar produto {sku}: {e}")
