@@ -23,7 +23,7 @@ def get_produtos(name_like=None, limit=50, offset=0, sort=None):
         if name_like:
             params["name_like"] = name_like
         if sort:
-            params["_sort"] = sort  # ✅ aqui está o ponto principal
+            params["_sort"] = sort
 
         resp = requests.get(API_URL, headers=get_headers(), params=params)
         if resp.status_code == 200:
@@ -67,15 +67,6 @@ def atualizar_produto(sku, nome=None, description=None):
         print(f"Erro ao atualizar produto {sku}: {e}")
         return False
 
-def atualizar_parcial_produto(sku, nome=None):
-    try:
-        payload = {"name": nome} if nome else {}
-        resp = requests.patch(f"{API_URL}/{sku}", headers=get_headers(), json=payload)
-        return resp.status_code == 202
-    except Exception as e:
-        print(f"Erro ao atualizar parcialmente produto {sku}: {e}")
-        return False
-
 def excluir_produto(sku):
     try:
         resp = requests.delete(f"{API_URL}/{sku}", headers=get_headers())
@@ -83,7 +74,3 @@ def excluir_produto(sku):
     except Exception as e:
         print(f"Erro ao excluir produto: {e}")
         return False
-
-def login_api(usuario, senha):
-    # Login é sempre true (mockado)
-    return True
