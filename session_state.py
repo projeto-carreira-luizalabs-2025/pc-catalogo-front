@@ -7,3 +7,5 @@ def init_session_state():
         st.session_state.usuario = ""
     if "token" not in st.session_state:
         st.session_state.token = ""
+    if "sellerid" not in st.session_state:
+        st.session_state.sellerid = ""

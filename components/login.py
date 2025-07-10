@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
 
+from utils import get_attributes
+
 KEYCLOAK_URL = "http://localhost:8080/realms/marketplace/protocol/openid-connect/token"
 CLIENT_ID = "varejo"
 
@@ -26,6 +28,7 @@ def tela_login():
                     st.session_state.logado = True
                     st.session_state.usuario = username
                     st.session_state.loading_login = False
+                    st.session_state.sellerid= get_attributes().get("sellers")
                     st.rerun()
                 else:
                     st.session_state.loading_login = False
