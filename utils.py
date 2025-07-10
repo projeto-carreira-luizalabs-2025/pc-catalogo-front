@@ -1,18 +1,33 @@
 import requests
 import streamlit as st
+import jwt
 
 API_URL = "http://localhost:8000/seller/v2/catalogo"
 
-import streamlit as st
+def get_attributes():
+    access_token = st.session_state.get("token", "")
+    if not access_token:
+        st.error("Token não encontrado. Faça login novamente.")
+        return {}
+
+    try:
+        # Decodifica o token sem verificar a assinatura
+        decoded = jwt.decode(access_token, options={"verify_signature": False})
+        sellers = decoded.get("sellers")
+        return {"sellers": sellers}
+    except Exception as e:
+        st.error(f"Erro ao decodificar token: {e}")
+        return {}
 
 def get_headers():
     token = st.session_state.get("token", "")
-    seller_id = "magalu"
+    seller_id = st.session_state.get("sellerid")
     headers = {
         "x-seller-id": seller_id,
         "Authorization": f"Bearer {token}"
     }
     return headers
+
 
 def get_produtos(name_like=None, limit=50, offset=0, sort=None):
     try:

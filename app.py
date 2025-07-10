@@ -3,6 +3,7 @@ from components.login import tela_login
 from components.lista import tela_lista
 from components.cadastro import tela_cadastro
 from session_state import init_session_state
+from utils import get_attributes
 
 # Inicializa o estado da sessão
 init_session_state()
@@ -36,12 +37,16 @@ if st.session_state.logado:
         st.session_state.pagina_atual = "lista"
 
     nome_usuario = st.session_state.get("usuario", "Usuário")
+    token = st.session_state.get("token", "Token")
+    attrs = get_attributes()
+    if attrs:
+        st.write("Seller ID:", attrs["sellers"])
 
     # Saudação com HTML no menu lateral
     st.sidebar.markdown(
         f"""
         <div style='margin-bottom: 2rem;'>
-            <p style='font-weight: bold; font-size: 1.1rem;'>Olá, {nome_usuario}</p>
+            <p style='font-weight: bold; font-size: 1.1rem;'>Olá, {nome_usuario} {token}</p>
             <hr style='margin-top: 0.5rem;'>
         </div>
         """,
