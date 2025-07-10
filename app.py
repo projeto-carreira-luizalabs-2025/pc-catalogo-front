@@ -39,14 +39,13 @@ if st.session_state.logado:
     nome_usuario = st.session_state.get("usuario", "Usuário")
 
     attrs = get_attributes()
-    if attrs:
-        st.write("Seller ID:", attrs["sellers"])
 
     # Saudação com HTML no menu lateral
     st.sidebar.markdown(
         f"""
         <div style='margin-bottom: 2rem;'>
             <p style='font-weight: bold; font-size: 1.1rem;'>Olá, {nome_usuario}</p>
+            <p style='font-weight: bold; font-size: 1.1rem;'>Seller: {attrs["sellers"]}</p>
             <hr style='margin-top: 0.5rem;'>
         </div>
         """,
