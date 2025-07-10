@@ -12,9 +12,9 @@ def tela_cadastro():
             st.warning("Preencha todos os campos.")
         else:
             with st.spinner("Cadastrando produto..."):
-                sucesso = cadastrar_produto(sku, nome)
-
+                sucesso, mensagem_erro = cadastrar_produto(sku, nome)
+                
             if sucesso:
                 st.success("Produto cadastrado com sucesso!")
             else:
-                st.error("Erro ao cadastrar produto.")
+                st.error(f"Erro ao cadastrar produto: {mensagem_erro}")

@@ -47,10 +47,25 @@ def cadastrar_produto(sku, nome):
     try:
         payload = {"sku": sku, "name": nome}
         resp = requests.post(API_URL, headers=get_headers(), json=payload)
-        return resp.status_code == 201
+
+        if resp.status_code == 201:
+            return True, None
+        else:
+            try:
+                data = resp.json()
+                detalhes = data.get("details", [])
+                if detalhes and isinstance(detalhes, list):
+                    mensagem_erro = detalhes[0].get("message", "Erro desconhecido")
+                else:
+                    mensagem_erro = data.get("message", "Erro desconhecido")
+            except Exception:
+                mensagem_erro = "Erro desconhecido ao processar a resposta da API"
+
+            return False, mensagem_erro
+
     except Exception as e:
         print(f"Erro ao cadastrar produto: {e}")
-        return False
+        return False, str(e)
 
 def atualizar_produto(sku, nome=None, description=None):
     try:
