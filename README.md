@@ -55,6 +55,7 @@ python run_app.py
 ├── components/         # Telas da interface
 │   ├── lista.py        # Tela de listagem de produtos
 │   ├── cadastro.py     # Tela de cadastro de novo produto
+│   ├── edicao.py       # Tela de edição de um produto
 │   └── login.py        # Tela de autenticação
 └── README.md           # Instruções de uso
 ```
