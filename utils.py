@@ -4,6 +4,7 @@ import jwt
 
 API_URL = "http://localhost:8000/seller/v2/catalogo"
 
+<<<<<<< HEAD
 def get_attributes():
     access_token = st.session_state.get("token", "")
     if not access_token:
@@ -19,6 +20,8 @@ def get_attributes():
         st.error(f"Erro ao decodificar token: {e}")
         return {}
 
+=======
+>>>>>>> 415e85280426734bfc73ee5a5d1dfae2ff187c9d
 def get_headers():
     token = st.session_state.get("token", "")
     seller_id = st.session_state.get("sellerid")
@@ -62,10 +65,25 @@ def cadastrar_produto(sku, nome):
     try:
         payload = {"sku": sku, "name": nome}
         resp = requests.post(API_URL, headers=get_headers(), json=payload)
-        return resp.status_code == 201
+
+        if resp.status_code == 201:
+            return True, None
+        else:
+            try:
+                data = resp.json()
+                detalhes = data.get("details", [])
+                if detalhes and isinstance(detalhes, list):
+                    mensagem_erro = detalhes[0].get("message", "Erro desconhecido")
+                else:
+                    mensagem_erro = data.get("message", "Erro desconhecido")
+            except Exception:
+                mensagem_erro = "Erro desconhecido ao processar a resposta da API"
+
+            return False, mensagem_erro
+
     except Exception as e:
         print(f"Erro ao cadastrar produto: {e}")
-        return False
+        return False, str(e)
 
 def atualizar_produto(sku, nome=None, description=None):
     try:
@@ -75,12 +93,27 @@ def atualizar_produto(sku, nome=None, description=None):
         if description is not None:
             payload["description"] = description
         if not payload:
-            return False
+            return False, "Nenhuma alteração fornecida."
+
         resp = requests.patch(f"{API_URL}/{sku}", headers=get_headers(), json=payload)
-        return resp.status_code == 202
+
+        if resp.status_code == 202:
+            return True, None
+        else:
+            try:
+                data = resp.json()
+                detalhes = data.get("details", [])
+                if detalhes and isinstance(detalhes, list):
+                    mensagem_erro = detalhes[0].get("message", "Erro desconhecido")
+                else:
+                    mensagem_erro = data.get("message", "Erro desconhecido")
+            except Exception:
+                mensagem_erro = "Erro desconhecido ao processar a resposta da API"
+            return False, mensagem_erro
+
     except Exception as e:
         print(f"Erro ao atualizar produto {sku}: {e}")
-        return False
+        return False, str(e)
 
 def excluir_produto(sku):
     try:
