@@ -3,8 +3,6 @@ import streamlit as st
 
 API_URL = "http://localhost:8000/seller/v2/catalogo"
 
-import streamlit as st
-
 def get_headers():
     token = st.session_state.get("token", "")
     seller_id = "magalu"
