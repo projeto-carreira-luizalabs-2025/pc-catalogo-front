@@ -29,7 +29,6 @@ def tela_login():
                     st.session_state.usuario = username
                     st.session_state.loading_login = False
                     st.session_state.sellerid= get_attributes().get("sellers")
-                    print(st.session_state.sellerid)
                     st.rerun()
                 else:
                     st.session_state.loading_login = False

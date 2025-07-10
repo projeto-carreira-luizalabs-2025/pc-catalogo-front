@@ -4,7 +4,6 @@ import jwt
 
 API_URL = "http://localhost:8000/seller/v2/catalogo"
 
-<<<<<<< HEAD
 def get_attributes():
     access_token = st.session_state.get("token", "")
     if not access_token:
@@ -20,14 +19,12 @@ def get_attributes():
         st.error(f"Erro ao decodificar token: {e}")
         return {}
 
-=======
->>>>>>> 415e85280426734bfc73ee5a5d1dfae2ff187c9d
 def get_headers():
     token = st.session_state.get("token", "")
     seller_id = st.session_state.get("sellerid")
     headers = {
         "x-seller-id": seller_id,
-        "Authorization": f"Bearer {token}"
+        "Authorization": f"Bearer {token}"  
     }
     return headers
 
