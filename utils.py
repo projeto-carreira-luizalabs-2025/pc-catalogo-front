@@ -75,12 +75,27 @@ def atualizar_produto(sku, nome=None, description=None):
         if description is not None:
             payload["description"] = description
         if not payload:
-            return False
+            return False, "Nenhuma alteração fornecida."
+
         resp = requests.patch(f"{API_URL}/{sku}", headers=get_headers(), json=payload)
-        return resp.status_code == 202
+
+        if resp.status_code == 202:
+            return True, None
+        else:
+            try:
+                data = resp.json()
+                detalhes = data.get("details", [])
+                if detalhes and isinstance(detalhes, list):
+                    mensagem_erro = detalhes[0].get("message", "Erro desconhecido")
+                else:
+                    mensagem_erro = data.get("message", "Erro desconhecido")
+            except Exception:
+                mensagem_erro = "Erro desconhecido ao processar a resposta da API"
+            return False, mensagem_erro
+
     except Exception as e:
         print(f"Erro ao atualizar produto {sku}: {e}")
-        return False
+        return False, str(e)
 
 def excluir_produto(sku):
     try:

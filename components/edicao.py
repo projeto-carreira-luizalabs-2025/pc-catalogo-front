@@ -17,13 +17,14 @@ def tela_edicao():
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("💾 Salvar alterações"):
-            if atualizar_produto(produto['sku'], nome=nome, description=descricao):
+            sucesso, mensagem_erro = atualizar_produto(produto['sku'], nome=nome, description=descricao)
+            if sucesso:
                 st.success("Produto atualizado com sucesso!")
                 st.session_state['modo_edicao'] = False
                 st.session_state['produto_editar'] = None
                 st.rerun()
             else:
-                st.error("Erro ao atualizar produto.")
+                st.error(f"Erro ao atualizar produto: {mensagem_erro}")
 
     with col2:
         if st.button("❌ Cancelar"):
