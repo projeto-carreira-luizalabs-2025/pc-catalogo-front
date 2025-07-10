@@ -37,7 +37,7 @@ if st.session_state.logado:
         st.session_state.pagina_atual = "lista"
 
     nome_usuario = st.session_state.get("usuario", "Usuário")
-    token = st.session_state.get("token", "Token")
+
     attrs = get_attributes()
     if attrs:
         st.write("Seller ID:", attrs["sellers"])
@@ -46,7 +46,7 @@ if st.session_state.logado:
     st.sidebar.markdown(
         f"""
         <div style='margin-bottom: 2rem;'>
-            <p style='font-weight: bold; font-size: 1.1rem;'>Olá, {nome_usuario} {token}</p>
+            <p style='font-weight: bold; font-size: 1.1rem;'>Olá, {nome_usuario}</p>
             <hr style='margin-top: 0.5rem;'>
         </div>
         """,
