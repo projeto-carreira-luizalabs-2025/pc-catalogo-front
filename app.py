@@ -43,14 +43,29 @@ if st.session_state.logado:
     # Saudação com HTML no menu lateral
     st.sidebar.markdown(
         f"""
-        <div style='margin-bottom: 2rem;'>
+        <div style='margin-bottom: 1rem;'>
             <p style='font-weight: bold; font-size: 1.1rem;'>Olá, {nome_usuario}</p>
-            <p style='font-weight: bold; font-size: 1.1rem;'>Seller: {attrs["sellers"]}</p>
-            <hr style='margin-top: 0.5rem;'>
         </div>
         """,
         unsafe_allow_html=True
     )
+
+    # Mostra seletor de sellers se houver mais de um
+    sellers = attrs.get("sellers", [])
+    if sellers:
+        if "sellerid" not in st.session_state or st.session_state.sellerid not in sellers:
+            st.session_state.sellerid = sellers[0]
+
+        st.sidebar.markdown("<p style='margin-bottom: 0.2rem;'>Selecione o seller:</p>", unsafe_allow_html=True)
+        st.sidebar.selectbox(
+            label="",
+            options=sellers,
+            key="sellerid",
+            label_visibility="collapsed"
+        )
+
+    # Linha separadora
+    st.sidebar.markdown("<hr style='margin-top: 1rem;'>", unsafe_allow_html=True)
 
     # Botões de navegação
     if menu_link("Lista de Produtos", "lista"):

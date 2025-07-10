@@ -11,10 +11,10 @@ def get_attributes():
         return {}
 
     try:
-        # Decodifica o token sem verificar a assinatura
         decoded = jwt.decode(access_token, options={"verify_signature": False})
-        sellers = decoded.get("sellers")
-        return {"sellers": sellers}
+        sellers_str = decoded.get("sellers", "")
+        sellers_list = [s.strip() for s in sellers_str.split(",")] if isinstance(sellers_str, str) else []
+        return {"sellers": sellers_list}
     except Exception as e:
         st.error(f"Erro ao decodificar token: {e}")
         return {}
@@ -27,7 +27,6 @@ def get_headers():
         "Authorization": f"Bearer {token}"  
     }
     return headers
-
 
 def get_produtos(name_like=None, limit=50, offset=0, sort=None):
     try:
